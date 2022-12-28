@@ -1,80 +1,54 @@
 package com.apptrainer.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "athletes")
-public class Athlete {
+@Table(name = "athletes_group")
+public class Group {
 	@Id
-	@Column(name = "athlete_id", unique = true, nullable = false)
+	@Column(name = "group_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 	
-	@Column(name = "first_name", unique = false, nullable = false)
-    private String firstName;
-    
-	@Column(name = "last_name", unique = false, nullable = false)
-    private String lastName;
-    
-    @Column(name = "email", unique = false, nullable = true)
-    private String email;
-    
-    @Column(name = "athlete_role", unique = false, nullable = true)
-    private String athlete_role;
-    
+	@Column(name = "group_name", unique = false, nullable = false)
+    private String groupName;
+	
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "group_id")
+    private Set<Athlete> athletes;
 
-    public Athlete() {
-    }
-
-    public Athlete(int id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-	public String getEmail() {
-		return email;
+	public int getId() {
+		return id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getAthlete_role() {
-		return athlete_role;
+	public String getGroupName() {
+		return groupName;
 	}
 
-	public void setAthlete_role(String athlete_role) {
-		this.athlete_role = athlete_role;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public Set<Athlete> getAthletes() {
+		return athletes;
+	}
+
+	public void setAthletes(Set<Athlete> athletes) {
+		this.athletes = athletes;
 	}
 
 }

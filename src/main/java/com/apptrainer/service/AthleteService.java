@@ -13,19 +13,19 @@ import java.util.List;
 public class AthleteService {
     @Autowired
     private AthleteRepository userRepository;
-    public List<Athlete> listAllUser() {
+    public List<Athlete> listAll() {
         return userRepository.findAll();
     }
 
-    public void saveUser(Athlete user) {
+    public void saveAthlete(Athlete user) {
         userRepository.save(user);
     }
 
-    public Athlete getUser(Integer id) {
+    public Athlete getAthlete(Integer id) {
         return userRepository.findById(id).get();
     }
 
-    public void deleteUser(Integer id) {
+    public void deleteAthlete(Integer id) {
         userRepository.deleteById(id);
     }
 }

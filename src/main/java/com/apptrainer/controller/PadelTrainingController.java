@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.PadelTraining;
 import com.apptrainer.service.PadelTrainingService;
@@ -47,8 +48,9 @@ public class PadelTrainingController {
     }
     
     @PostMapping("/")
-    public void add(@RequestBody PadelTraining padelTraining) {
-    	padelTrainingService.savePadelTraining(padelTraining);
+    public PadelTraining add(@RequestBody PadelTraining padelTraining) {
+    	PadelTraining padelReturn = padelTrainingService.savePadelTraining(padelTraining);
+    	return padelReturn;
     }
 
     @PutMapping("/{id}")
@@ -69,8 +71,34 @@ public class PadelTrainingController {
             return new ResponseEntity<PadelTraining>(padelTrainingReturned,HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        } catch (AppTrainerException e) {
+        	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
+    
+    @PostMapping("/{id}/athletes/{athlete_id}")
+    public ResponseEntity<?> addAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
+        try {
+        	PadelTraining padelTrainingReturned = padelTrainingService.addAthlete(id, athlete_id);
+            return new ResponseEntity<PadelTraining>(padelTrainingReturned,HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (AppTrainerException e) {
+        	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @DeleteMapping("/{id}/athletes/{athlete_id}")
+    public ResponseEntity<?> deleteAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
+        try {
+        	PadelTraining padelTrainingReturned = padelTrainingService.deleteAthlete(id, athlete_id);
+            return new ResponseEntity<PadelTraining>(padelTrainingReturned,HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (AppTrainerException e) {
+        	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }    
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {

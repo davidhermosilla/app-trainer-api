@@ -32,13 +32,13 @@ public class AthleteController {
     @GetMapping("")
     public List<Athlete> list() {
     	log.debug("List");
-        return athleteService.listAllUser();
+        return athleteService.listAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Athlete> get(@PathVariable Integer id) {
         try {
-            Athlete user = athleteService.getUser(id);
+            Athlete user = athleteService.getAthlete(id);
             return new ResponseEntity<Athlete>(user, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
@@ -46,13 +46,13 @@ public class AthleteController {
     }
     @PostMapping("/")
     public void add(@RequestBody Athlete user) {
-        athleteService.saveUser(user);
+        athleteService.saveAthlete(user);
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Athlete user, @PathVariable Integer id) {
         try {
             user.setId(id);
-            athleteService.saveUser(user);
+            athleteService.saveAthlete(user);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,6 +61,6 @@ public class AthleteController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
 
-        athleteService.deleteUser(id);
+        athleteService.deleteAthlete(id);
     }
 }

@@ -29,6 +29,11 @@ public class AthleteController {
     @Autowired
     AthleteService athleteService;
 
+    @GetMapping("/test")
+    public  ResponseEntity<String> test() {
+    	return new ResponseEntity<String>("Esto es un test", HttpStatus.OK);
+    }    
+    
     @GetMapping("")
     public List<Athlete> list() {
     	log.debug("List");

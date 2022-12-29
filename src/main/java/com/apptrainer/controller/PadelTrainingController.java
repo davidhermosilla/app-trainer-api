@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apptrainer.constant.AppTrainerConstant;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.PadelTraining;
 import com.apptrainer.service.PadelTrainingService;
 
 @RestController
-@RequestMapping("/padeltrainings")
+@RequestMapping(AppTrainerConstant.APP_PREFIX+"/padeltrainings")
 public class PadelTrainingController {
 	
 	static final Logger log = LoggerFactory.getLogger(PadelTrainingController.class);

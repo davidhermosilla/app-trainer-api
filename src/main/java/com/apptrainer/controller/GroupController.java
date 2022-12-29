@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apptrainer.constant.AppTrainerConstant;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Group;
 import com.apptrainer.service.GroupService;
 
 @RestController
-@RequestMapping("/groups")
+@RequestMapping(AppTrainerConstant.APP_PREFIX+"/groups")
 public class GroupController {
 	
 	static final Logger log = LoggerFactory.getLogger(GroupController.class);

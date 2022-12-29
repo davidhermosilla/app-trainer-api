@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apptrainer.constant.AppTrainerConstant;
+import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
+import com.apptrainer.model.TrainingHistory;
 import com.apptrainer.service.AthleteService;
 
 @RestController
-@RequestMapping("/athletes")
+@RequestMapping(AppTrainerConstant.APP_PREFIX+"/athletes")
 public class AthleteController {
 	
 	static final Logger log = LoggerFactory.getLogger(AthleteController.class);
@@ -49,10 +52,12 @@ public class AthleteController {
             return new ResponseEntity<Athlete>(HttpStatus.NOT_FOUND);
         }
     }
+    
     @PostMapping("/")
     public void add(@RequestBody Athlete user) {
         athleteService.saveAthlete(user);
     }
+    
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Athlete user, @PathVariable Integer id) {
         try {
@@ -63,9 +68,22 @@ public class AthleteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @PostMapping("/{athlete_id}/add-training/{training_id}")
+    public ResponseEntity<?> addTraining(@RequestBody TrainingHistory training, @PathVariable Integer athlete_id, @PathVariable Integer training_id) {
+        try {
+            
+        	List<TrainingHistory> listTraining = athleteService.addTrainingHistory(training_id, athlete_id, training);
+        	
+            return new ResponseEntity<>(listTraining,HttpStatus.OK);
+        } catch (AppTrainerException ex) {
+        	return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }    
+    
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
-
         athleteService.deleteAthlete(id);
     }
+    
 }

@@ -1,5 +1,6 @@
 package com.apptrainer.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ public class Group {
 	
     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "group_id")
-    private Set<Athlete> athletes;
+    private List<Athlete> athletes;
 
 	public int getId() {
 		return id;
@@ -43,11 +44,11 @@ public class Group {
 		this.groupName = groupName;
 	}
 
-	public Set<Athlete> getAthletes() {
+	public List<Athlete> getAthletes() {
 		return athletes;
 	}
 
-	public void setAthletes(Set<Athlete> athletes) {
+	public void setAthletes(List<Athlete> athletes) {
 		this.athletes = athletes;
 	}
 

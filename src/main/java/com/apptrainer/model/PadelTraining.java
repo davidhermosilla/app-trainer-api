@@ -10,23 +10,12 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "padeltraining_id")
 public class PadelTraining extends Training {
 
-	@Column(name = "pryce", unique = false, nullable = true)
-    private int pryce;
-	
-	@Column(name = "level", unique = false, nullable = true)
-    private String level;
-	
     public PadelTraining() {
     }
     
-	public void setPryce(int pryce) {
-		this.pryce = pryce;
-	}
-	
-	public int getPryce() {
-        return pryce;
-    }
-
+	@Column(name = "level", unique = false, nullable = true)
+    private String level;
+    
 	public String getLevel() {
 		return level;
 	}

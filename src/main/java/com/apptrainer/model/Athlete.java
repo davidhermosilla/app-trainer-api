@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
         columnNames = {"first_name", "last_name"})
 	})
 public class Athlete {
+	
 	@Id
 	@Column(name = "athlete_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +48,10 @@ public class Athlete {
     @ManyToMany(mappedBy = "athletes")
     @JsonIgnore
     private List<Training> trainings;
+    
+    @OneToMany(cascade = CascadeType.ALL )
+    @JoinColumn(name = "athlete_id")
+    private List<TrainingHistory> trainingHistories;   
 
     public Athlete() {
     }
@@ -138,6 +143,14 @@ public class Athlete {
 			return true;
 		}
 		return false;
+	}
+
+	public List<TrainingHistory> getTrainingHistories() {
+		return trainingHistories;
+	}
+
+	public void setTrainingHistories(List<TrainingHistory> trainingHistories) {
+		this.trainingHistories = trainingHistories;
 	}
 
 	public List<Training> getTrainings() {

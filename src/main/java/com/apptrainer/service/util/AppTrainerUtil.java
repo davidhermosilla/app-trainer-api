@@ -9,8 +9,10 @@ import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Group;
 import com.apptrainer.model.PadelTraining;
+import com.apptrainer.model.Training;
 import com.apptrainer.repository.AthleteRepository;
 import com.apptrainer.repository.GroupRepository;
+import com.apptrainer.repository.TrainingRepository;
 
 public class AppTrainerUtil {
 	/**
@@ -90,5 +92,21 @@ public class AppTrainerUtil {
 			throw new AppTrainerException("El grupo "+id+" no existe");
 		}
 		return group;
+	}
+	
+	/**
+	 * @param id
+	 * @param group
+	 * @return
+	 * @throws AppTrainerException
+	 */
+	public static Training checkTraining(TrainingRepository trainingRepository,Integer id) throws AppTrainerException {
+		Training training=null;
+		try {
+			training = trainingRepository.findById(id).get();
+		} catch(NoSuchElementException ex) {
+			throw new AppTrainerException("El entrenamiento "+id+" no existe");
+		}
+		return training;
 	}
 }

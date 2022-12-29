@@ -23,7 +23,7 @@ public class Group {
 	@Column(name = "group_name", unique = false, nullable = false)
     private String groupName;
 	
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "group_id")
     private Set<Athlete> athletes;
 

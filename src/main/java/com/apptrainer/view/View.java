@@ -9,4 +9,7 @@ public class View {
     
     public static class Group extends Basic {
     }
+    
+    public static class None {
+    }
 }

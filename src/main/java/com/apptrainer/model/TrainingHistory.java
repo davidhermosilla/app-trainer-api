@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
@@ -57,6 +58,10 @@ public class TrainingHistory {
     @JoinColumn(name = "training_id")
     @JsonView(View.Basic.class)
     private Training training;
+    
+    @JsonProperty("repeat_training")
+    @JsonView(View.None.class)
+    private int repeat_training = 0;
 	
 	public int getId() {
 		return id;
@@ -88,6 +93,14 @@ public class TrainingHistory {
 
 	public void setTraining(Training training) {
 		this.training = training;
+	}
+
+	public int getRepeat_training() {
+		return repeat_training;
+	}
+
+	public void setRepeat_training(int repeat_training) {
+		this.repeat_training = repeat_training;
 	}
 
 }

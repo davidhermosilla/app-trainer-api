@@ -22,6 +22,7 @@ import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.TrainingHistory;
 import com.apptrainer.service.AthleteService;
+import com.apptrainer.service.TrainingHistoryService;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -33,6 +34,9 @@ public class AthleteController {
 	
     @Autowired
     AthleteService athleteService;
+    
+    @Autowired
+    TrainingHistoryService trainingHistoryService;
 
     @GetMapping("/test")
     public  ResponseEntity<String> test() {
@@ -75,22 +79,46 @@ public class AthleteController {
         }
     }
     
-    @PostMapping("/{athlete_id}/add-training/{training_id}")
+    @PostMapping("/{athlete_id}/training-histories/{training_id}")
     @JsonView(View.Extended.class)
     public ResponseEntity<?> addTraining(@RequestBody TrainingHistory training, @PathVariable Integer athlete_id, @PathVariable Integer training_id) {
+    	Athlete athlete=null;
         try {
-            
-        	Athlete athlete = athleteService.addTrainingHistory(training_id, athlete_id, training);
+            if (training.getRepeat_training()!=0) {
+            	athlete = athleteService.addTrainingsHistory(training_id, athlete_id, training,training.getRepeat_training());
+            } else {
+            	athlete = athleteService.addTrainingHistory(training_id, athlete_id, training);
+            }
         	
             return new ResponseEntity<>(athlete,HttpStatus.OK);
         } catch (AppTrainerException ex) {
         	return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-    }    
+    }
+    
+    @DeleteMapping("/{athlete_id}/training-histories/{training_history_id}")
+    @JsonView(View.Extended.class)
+    public void addTraining(@PathVariable Integer athlete_id, @PathVariable Integer training_history_id) {
+        trainingHistoryService.deleteTrainingHistory(training_history_id);
+    } 
+    
+    @PutMapping("/{athlete_id}/training-histories/{training_history_id}/status")
+    @JsonView(View.Extended.class)
+    public void modifyTrainingStatus(@RequestBody TrainingHistory training,@PathVariable Integer athlete_id, @PathVariable Integer training_history_id) {
+        trainingHistoryService.modifyTrainingHistoryStatus(training_history_id,training);
+    }
+    
+    @PutMapping("/{athlete_id}/training-histories/{training_history_id}/training-date")
+    @JsonView(View.Extended.class)
+    public void modifyTrainingDate(@RequestBody TrainingHistory training,@PathVariable Integer athlete_id, @PathVariable Integer training_history_id) {
+        trainingHistoryService.modifyTrainingHistoryDate(training_history_id,training);
+    }     
     
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         athleteService.deleteAthlete(id);
     }
+    
+    
     
 }

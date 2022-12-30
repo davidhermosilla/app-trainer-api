@@ -26,5 +26,17 @@ public class TrainingHistoryService {
     public void deleteTrainingHistory(Integer id) {
     	trainingHistoryRepository.deleteById(id);
     }
+    
+    public void modifyTrainingHistoryStatus(Integer id, TrainingHistory training) {
+    	TrainingHistory trainingHistory = trainingHistoryRepository.findById(id).get();
+    	trainingHistory.setPayStatus(training.getPayStatus());
+    	trainingHistoryRepository.saveAndFlush(trainingHistory);
+    }    
+
+    public void modifyTrainingHistoryDate(Integer id, TrainingHistory training) {
+    	TrainingHistory trainingHistory = trainingHistoryRepository.findById(id).get();
+    	trainingHistory.setTrainingDate(training.getTrainingDate());
+    	trainingHistoryRepository.saveAndFlush(trainingHistory);
+    }
 
 }

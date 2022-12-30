@@ -1,6 +1,10 @@
 package com.apptrainer.service.util;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -109,4 +113,35 @@ public class AppTrainerUtil {
 		}
 		return training;
 	}
+	
+	public static LocalDateTime convertToLocalDateViaInstant(Date dateToConvert) {
+	    return dateToConvert.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDateTime();
+	}
+	
+	public static Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
+	    return java.sql.Timestamp.valueOf(dateToConvert);
+	}
+	
+	/**
+	 * @param training_date
+	 * @return
+	 */
+	public static Date addMonth(Date training_date) {	
+		
+//		GregorianCalendar calendar = new GregorianCalendar();
+//	    calendar.setTime(training_date);
+//		
+//	    calendar.add((GregorianCalendar.MONTH), 1);
+	    
+		LocalDateTime ldt = AppTrainerUtil.convertToLocalDateViaInstant(training_date);
+//		LocalDateTime ldt_next = ldt.with(TemporalAdjusters.firstDayOfNextMonth());
+		LocalDateTime ldt_next = ldt.plusMonths(1);
+		Date newdate = AppTrainerUtil.convertToDateViaSqlTimestamp(ldt_next);
+	    
+//	    Date newdate = java.util.Date.from(calendar.toZonedDateTime().toInstant());
+		return newdate;
+	}
+	
 }

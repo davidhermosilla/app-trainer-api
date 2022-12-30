@@ -1,5 +1,8 @@
 package com.apptrainer.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 
@@ -111,6 +114,19 @@ public class AthleteService {
 		if (!encontrado) {
 			throw new AppTrainerException("El athleta "+athlete_id+" no tiene asignado el entrenamiento "+training_id+" asignelo y intentelo de nuevo");
 		}
+	}
+
+	public Athlete addTrainingsHistory(Integer training_id, Integer athlete_id, TrainingHistory training,int repeat_training) throws AppTrainerException {
+		Athlete athlete=null;
+		for (int i=0;i<repeat_training;i++) {			
+			athlete = addTrainingHistory(training_id, athlete_id, training);
+			Date training_date = training.getTrainingDate();
+			
+			Date newdate = AppTrainerUtil.addMonth(training_date);
+			
+			training.setTrainingDate(newdate);
+		}
+		return athlete;
 	}
 
 }

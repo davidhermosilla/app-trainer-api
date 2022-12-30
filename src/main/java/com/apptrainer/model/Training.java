@@ -13,11 +13,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
@@ -46,15 +46,19 @@ public class Training {
 	@Id
 	@Column(name = "training_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(View.Basic.class)
 	private int id;
 	
 	@Column(name = "training_type", unique = false, nullable = false)
+	@JsonView(View.Basic.class)
 	protected String training_type; //1semanal, 2 semanal, 3 semanal
 	
 	@Column(name = "pryce", unique = false, nullable = true)
+	@JsonView(View.Basic.class)
     private int pryce;
 	
 	@Column(name = "duration_type", unique = false, nullable = false)
+	@JsonView(View.Basic.class)
     private String durationType;
 	
     @ManyToMany(cascade = {
@@ -68,6 +72,7 @@ public class Training {
     		name="athlete_training_pk",
             columnNames = {"athlete_id", "training_id"})}
     )
+    @JsonView(View.Extended.class)
     private List<Athlete> athletes;	
 	
     public Training() {

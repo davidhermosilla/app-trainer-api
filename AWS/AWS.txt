@@ -1,0 +1,17 @@
+ssh -i "sshdavidpem.pem" ubuntu@ec2-18-191-226-211.us-east-2.compute.amazonaws.com
+
+scp -i "sshdavidpem.pem" ./app-trainer-api-0.0.1-SNAPSHOT.jar ubuntu@ec2-18-191-226-211.us-east-2.compute.amazonaws.com:/home/ubuntu
+
+
+ubuntu@ip-172-31-35-74:~$ cat /etc/systemd/system/apptrainer.service
+[Unit]
+Description=App Trainer API
+After=syslog.target
+
+[Service]
+User=ubuntu
+ExecStart=sudo java -jar -Dspring.profiles.active=aws -Dserver.port=8080 /home/ubuntu/app-trainer-api-0.0.1-SNAPSHOT.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

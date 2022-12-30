@@ -28,8 +28,8 @@ public class AthleteService {
         return athleteRepository.findAll();
     }
 
-    public void saveAthlete(Athlete user) {
-        athleteRepository.save(user);
+    public Athlete saveAthlete(Athlete user) {
+        return athleteRepository.save(user);
     }
 
     public Athlete getAthlete(Integer id) {
@@ -40,7 +40,7 @@ public class AthleteService {
         athleteRepository.deleteById(id);
     }
     
-	public List<TrainingHistory> addTrainingHistory(Integer training_id, Integer athlete_id,TrainingHistory trainingHistory) throws AppTrainerException {
+	public Athlete addTrainingHistory(Integer training_id, Integer athlete_id,TrainingHistory trainingHistory) throws AppTrainerException {
 		
 		Training training = AppTrainerUtil.checkTraining(trainingRepository, training_id);
 		
@@ -52,6 +52,8 @@ public class AthleteService {
 			throw new AppTrainerException("Error no ha asignado la fecha del entrenamiento");
 		}
 		
+		checkTrainingMonthly(athlete_id, trainingHistory, training, athlete);
+		
 		trainingHistory.setPayStatus(TrainingHistory.PAYMENT_STATUS_TYPE.PENDING.getValue());
 		trainingHistory.setTraining(training);
 		
@@ -61,7 +63,32 @@ public class AthleteService {
 		
 		Athlete atheleteReturned = athleteRepository.save(athlete);
 		
-		return atheleteReturned.getTrainingHistories();
+		return atheleteReturned;
+	}
+
+	/**
+	 * @param athlete_id
+	 * @param trainingHistory
+	 * @param training
+	 * @param athlete
+	 * @throws AppTrainerException
+	 */
+	public void checkTrainingMonthly(Integer athlete_id, TrainingHistory trainingHistory, Training training,
+			Athlete athlete) throws AppTrainerException {
+		if (Training.TRAINING_DURATION_TYPE.MONTHLY.getValue().equals(training.getDurationType())) {
+			List<TrainingHistory> trainingHistories = athlete.getTrainingHistories();
+			for (TrainingHistory th:trainingHistories) {
+				if (Training.TRAINING_DURATION_TYPE.MONTHLY.getValue().equals(th.getTraining().getDurationType())) {
+					int thyear = th.getTrainingDate().getYear();
+					int thmonth = th.getTrainingDate().getMonth();
+					int newyear = trainingHistory.getTrainingDate().getYear();
+					int newmont =  trainingHistory.getTrainingDate().getMonth();
+					if (thyear==newyear && thmonth==newmont) {
+						throw new AppTrainerException("El athleta con id "+athlete_id+" ya tiene asignado un entrenamiento mensual en esa fecha.("+training.getTraining_type()+") desasigne este si desea asignar uno diferente en dicha fecha.");
+					}
+				}
+			}
+		}
 	}
 
 	/**

@@ -22,6 +22,8 @@ import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Group;
 import com.apptrainer.service.GroupService;
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/groups")
@@ -33,12 +35,14 @@ public class GroupController {
     GroupService groupService;
 
     @GetMapping("")
+    @JsonView(View.Basic.class)
     public List<Group> list() {
     	log.debug("List All Padel Trainings");
         return groupService.listAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(View.Group.class)
     public ResponseEntity<Group> get(@PathVariable Integer id) {
         try {
         	Group Group = groupService.getGroup(id);
@@ -49,12 +53,14 @@ public class GroupController {
     }
     
     @PostMapping("/")
+    @JsonView(View.Basic.class)
     public ResponseEntity<Group> add(@RequestBody Group group) {
     	group = groupService.saveGroup(group);
     	return new ResponseEntity<Group>(group,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @JsonView(View.Basic.class)
     public ResponseEntity<Group> update(@RequestBody Group group, @PathVariable Integer id) {
         try {
         	group.setId(id);
@@ -66,6 +72,7 @@ public class GroupController {
     }
     
     @PostMapping("/{id}/athletes/{athlete_id}")
+    @JsonView(View.Group.class)
     public ResponseEntity<?> addAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
         try {
         	Group groupReturned = groupService.addAthlete(id, athlete_id);
@@ -78,6 +85,7 @@ public class GroupController {
     }
     
     @DeleteMapping("/{id}/athletes/{athlete_id}")
+    @JsonView(View.Group.class)
     public ResponseEntity<?> deleteAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
         try {
         	Group GroupReturned = groupService.deleteAthlete(id, athlete_id);

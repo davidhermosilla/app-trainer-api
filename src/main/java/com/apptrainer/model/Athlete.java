@@ -15,8 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -31,26 +33,33 @@ public class Athlete {
 	@Id
 	@Column(name = "athlete_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView({View.Basic.class, View.Group.class})
     private int id;
 	
 	@Column(name = "first_name", unique = false, nullable = false)
+	@JsonView({View.Basic.class, View.Group.class})
     private String firstName;
     
 	@Column(name = "last_name", unique = false, nullable = false)
+	@JsonView({View.Basic.class, View.Group.class})
     private String lastName;
     
     @Column(name = "email", unique = false, nullable = true)
+    @JsonView({View.Basic.class, View.Group.class})
     private String email;
     
     @Column(name = "athlete_role", unique = false, nullable = true)
+    @JsonView({View.Basic.class, View.Group.class})
     private String athlete_role;
     
     @ManyToMany(mappedBy = "athletes")
     @JsonIgnore
+    @JsonView(View.Extended.class)
     private List<Training> trainings;
     
     @OneToMany(cascade = CascadeType.ALL )
     @JoinColumn(name = "athlete_id")
+    @JsonView(View.Extended.class)
     private List<TrainingHistory> trainingHistories;   
 
     public Athlete() {

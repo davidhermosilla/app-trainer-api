@@ -13,19 +13,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
+
 @Entity
 @Table(name = "athletes_group")
 public class Group {
 	@Id
 	@Column(name = "group_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView({View.Basic.class, View.Group.class})
     private int id;
 	
 	@Column(name = "group_name", unique = false, nullable = false)
+	@JsonView({View.Basic.class, View.Group.class})
     private String groupName;
 	
     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "group_id")
+    @JsonView({View.Group.class})
     private List<Athlete> athletes;
 
 	public int getId() {

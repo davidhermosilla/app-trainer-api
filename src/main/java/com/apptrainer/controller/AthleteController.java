@@ -22,6 +22,8 @@ import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.TrainingHistory;
 import com.apptrainer.service.AthleteService;
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/athletes")
@@ -38,12 +40,14 @@ public class AthleteController {
     }    
     
     @GetMapping("")
+    @JsonView(View.Basic.class)
     public List<Athlete> list() {
     	log.debug("List");
         return athleteService.listAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(View.Extended.class)
     public ResponseEntity<Athlete> get(@PathVariable Integer id) {
         try {
             Athlete user = athleteService.getAthlete(id);
@@ -54,11 +58,13 @@ public class AthleteController {
     }
     
     @PostMapping("/")
-    public void add(@RequestBody Athlete user) {
-        athleteService.saveAthlete(user);
+    @JsonView(View.Basic.class)
+    public Athlete add(@RequestBody Athlete user) {
+    	return athleteService.saveAthlete(user);
     }
     
     @PutMapping("/{id}")
+    @JsonView(View.Basic.class)
     public ResponseEntity<?> update(@RequestBody Athlete user, @PathVariable Integer id) {
         try {
             user.setId(id);
@@ -70,12 +76,13 @@ public class AthleteController {
     }
     
     @PostMapping("/{athlete_id}/add-training/{training_id}")
+    @JsonView(View.Extended.class)
     public ResponseEntity<?> addTraining(@RequestBody TrainingHistory training, @PathVariable Integer athlete_id, @PathVariable Integer training_id) {
         try {
             
-        	List<TrainingHistory> listTraining = athleteService.addTrainingHistory(training_id, athlete_id, training);
+        	Athlete athlete = athleteService.addTrainingHistory(training_id, athlete_id, training);
         	
-            return new ResponseEntity<>(listTraining,HttpStatus.OK);
+            return new ResponseEntity<>(athlete,HttpStatus.OK);
         } catch (AppTrainerException ex) {
         	return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}

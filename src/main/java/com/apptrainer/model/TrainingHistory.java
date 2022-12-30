@@ -1,7 +1,6 @@
 package com.apptrainer.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +13,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "training_history")
@@ -37,17 +40,22 @@ public class TrainingHistory {
 	@Id
 	@Column(name = "training_history_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonView(View.Basic.class)
     private int id;
 	
 	@Column(name = "pay_status", unique = false, nullable = false)
+	@JsonView(View.Basic.class)
     private String payStatus;
 	
 	@Column(name = "training_date", unique = false, nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonView(View.Basic.class)
     private Date trainingDate;
 	
     @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "training_id")
+    @JsonView(View.Basic.class)
     private Training training;
 	
 	public int getId() {

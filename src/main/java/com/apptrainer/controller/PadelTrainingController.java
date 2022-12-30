@@ -22,6 +22,8 @@ import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.PadelTraining;
 import com.apptrainer.service.PadelTrainingService;
+import com.apptrainer.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/padeltrainings")
@@ -33,12 +35,14 @@ public class PadelTrainingController {
     PadelTrainingService padelTrainingService;
 
     @GetMapping("")
+    @JsonView(View.Basic.class)
     public List<PadelTraining> list() {
     	log.debug("List All Padel Trainings");
         return padelTrainingService.listAllPadelTrainings();
     }
 
     @GetMapping("/{id}")
+    @JsonView(View.Extended.class)
     public ResponseEntity<PadelTraining> get(@PathVariable Integer id) {
         try {
         	PadelTraining padelTraining = padelTrainingService.getPadelTraining(id);
@@ -49,12 +53,14 @@ public class PadelTrainingController {
     }
     
     @PostMapping("/")
+    @JsonView(View.Basic.class)
     public PadelTraining add(@RequestBody PadelTraining padelTraining) {
     	PadelTraining padelReturn = padelTrainingService.savePadelTraining(padelTraining);
     	return padelReturn;
     }
 
     @PutMapping("/{id}")
+    @JsonView(View.Basic.class)
     public ResponseEntity<?> update(@RequestBody PadelTraining padelTraining, @PathVariable Integer id) {
         try {
         	padelTraining.setId(id);
@@ -66,6 +72,7 @@ public class PadelTrainingController {
     }
     
     @PutMapping("/{id}/athletes")
+    @JsonView(View.Extended.class)
     public ResponseEntity<?> update(@RequestBody List<Athlete> athletes, @PathVariable Integer id) {
         try {
         	PadelTraining padelTrainingReturned = padelTrainingService.updatePadelTrainingAthletes(id, athletes);
@@ -78,6 +85,7 @@ public class PadelTrainingController {
     }
     
     @PostMapping("/{id}/athletes/{athlete_id}")
+    @JsonView(View.Extended.class)
     public ResponseEntity<?> addAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
         try {
         	PadelTraining padelTrainingReturned = padelTrainingService.addAthlete(id, athlete_id);
@@ -90,6 +98,7 @@ public class PadelTrainingController {
     }
     
     @DeleteMapping("/{id}/athletes/{athlete_id}")
+    @JsonView(View.Extended.class)
     public ResponseEntity<?> deleteAthlete(@PathVariable Integer id, @PathVariable Integer athlete_id) {
         try {
         	PadelTraining padelTrainingReturned = padelTrainingService.deleteAthlete(id, athlete_id);

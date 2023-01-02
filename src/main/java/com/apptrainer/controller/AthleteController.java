@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apptrainer.PaysResponse;
 import com.apptrainer.constant.AppTrainerConstant;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
@@ -78,6 +79,19 @@ public class AthleteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/{athlete_id}/pending-pays")
+    @JsonView(View.Basic.class)
+    public ResponseEntity<?> getPendingPays(@PathVariable Integer athlete_id) {
+    	PaysResponse response;
+		try {
+			response = athleteService.getPendingPays(athlete_id);
+		
+			return new ResponseEntity<>(response,HttpStatus.OK);
+		} catch (Exception ex) {
+        	return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }    
     
     @PostMapping("/{athlete_id}/training-histories/{training_id}")
     @JsonView(View.Extended.class)
@@ -98,7 +112,7 @@ public class AthleteController {
     
     @DeleteMapping("/{athlete_id}/training-histories/{training_history_id}")
     @JsonView(View.Extended.class)
-    public void addTraining(@PathVariable Integer athlete_id, @PathVariable Integer training_history_id) {
+    public void deleteTraining(@PathVariable Integer athlete_id, @PathVariable Integer training_history_id) {
         trainingHistoryService.deleteTrainingHistory(training_history_id);
     } 
     

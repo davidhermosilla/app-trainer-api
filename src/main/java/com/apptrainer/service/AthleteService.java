@@ -3,6 +3,7 @@ package com.apptrainer.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.apptrainer.PaysResponse;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Training;
@@ -127,6 +129,23 @@ public class AthleteService {
 			training.setTrainingDate(newdate);
 		}
 		return athlete;
+	}
+
+	public PaysResponse getPendingPays(Integer athlete_id) {
+		Athlete athlete = athleteRepository.findById(athlete_id).get();
+		
+		List<TrainingHistory> listTrainings = athlete.getTrainingHistories();
+		List<TrainingHistory> pending = new ArrayList<TrainingHistory>();
+		float total=0;
+		PaysResponse pr = new PaysResponse();
+		for (TrainingHistory th:listTrainings) {
+			pending.add(th);
+			total+=th.getTraining().getPryce();
+		}
+
+		pr.setPendingTrainingHistory(pending);
+		pr.setTotal_pending(total);
+		return pr;
 	}
 
 }

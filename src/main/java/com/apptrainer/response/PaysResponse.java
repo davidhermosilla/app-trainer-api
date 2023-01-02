@@ -1,4 +1,4 @@
-package com.apptrainer;
+package com.apptrainer.response;
 
 import java.util.List;
 

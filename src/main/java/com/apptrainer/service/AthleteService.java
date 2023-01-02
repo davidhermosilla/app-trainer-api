@@ -1,8 +1,5 @@
 package com.apptrainer.service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,13 +9,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.apptrainer.PaysResponse;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Training;
 import com.apptrainer.model.TrainingHistory;
 import com.apptrainer.repository.AthleteRepository;
 import com.apptrainer.repository.TrainingRepository;
+import com.apptrainer.response.PaysResponse;
 import com.apptrainer.service.util.AppTrainerUtil;
 @Service
 @Transactional

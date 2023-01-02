@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apptrainer.PaysResponse;
 import com.apptrainer.constant.AppTrainerConstant;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.TrainingHistory;
+import com.apptrainer.response.PaysResponse;
 import com.apptrainer.service.AthleteService;
 import com.apptrainer.service.TrainingHistoryService;
 import com.apptrainer.view.View;

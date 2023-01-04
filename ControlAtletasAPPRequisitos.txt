@@ -1,0 +1,18 @@
+Applicación Control de Atletas
+-------------------------------
+- La aplicacion debe permitir el almacenamiento de los atletas. (Todos somos atletas incluido el entrenador, solo que el entrenador tendra un rol superior para gestionar mas cosas).
+- Será posible crear los datos, actualizarlos y borrar atletas.
+
+- El entrenador podrá crear tipos de entrenamientos distintos, a los cuales le asignará un precio.
+- El entrenador podrá poner el precio por entrenamiento para cada atleta.
+- Habrá una pantalla donde se podrá visualizar el total a pagar por cada atleta.
+    - Si el atleta no ha realizado el pago quedara como pendiente y se sumara al precio a pagar total del atleta.
+
+- El entrenador podrá asignar mensual o semanalmente los entrenamientos de los atletas. (Ya veremos como hacer esto para que no lleve mucho tiempo)
+- Los atletas podran ver los días y horas de sus entrenamientos.
+- Cuando el entrenador actualize las clases de sus atletas, llegará un correo a cada atleta indicando la información.
+
+- El entrenador podrá asignar una dieta a cada atleta si lo requiere.
+    - Esta dieta será guardada para cada atleta.
+    - El entrenadro podrá guardar la información de peso, masa osea, altura por cada atleta.
+    - Habrá una pantalla donde el entrenador podrá actulizar los resultados obtenidos entre un periodo de tiempo (durante el cual el atleta ha hecho la dieta).

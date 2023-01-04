@@ -20,7 +20,7 @@ public class SwaggerConfig {
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.apptrainer.controller"))
+				.apis(RequestHandlerSelectors.basePackage(AppTrainerMessages.getString("SwaggerConfig.package"))) //$NON-NLS-1$
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(getApiInfo())
@@ -29,13 +29,13 @@ public class SwaggerConfig {
 	
 	private springfox.documentation.service.ApiInfo getApiInfo() {
 		return new ApiInfo(
-				"App Trainer Management API",
-				"API to manage athletes and trainings",
-				"1.0",
-				"http://apptrainer/terms",
-				new Contact("AppTrainer", "https://apptrainer.com", "apis@apptrainer.com"),
-				"LICENSE",
-				"LICENSE URL",
+				AppTrainerMessages.getString("SwaggerConfig.api"), //$NON-NLS-1$
+				AppTrainerMessages.getString("SwaggerConfig.descriptionAPI"), //$NON-NLS-1$
+				AppTrainerMessages.getString("SwaggerConfig.apiVersion"), //$NON-NLS-1$
+				AppTrainerMessages.getString("SwaggerConfig.terms"), //$NON-NLS-1$
+				new Contact(AppTrainerMessages.getString("SwaggerConfig.appName"), AppTrainerMessages.getString("SwaggerConfig.appUrl"), AppTrainerMessages.getString("SwaggerConfig.appEmail")), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				AppTrainerMessages.getString("SwaggerConfig.license"), //$NON-NLS-1$
+				AppTrainerMessages.getString("SwaggerConfig.licenseUrl"), //$NON-NLS-1$
 				Collections.emptyList()
 				);
 	}

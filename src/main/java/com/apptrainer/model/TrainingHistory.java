@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.apptrainer.AppTrainerMessages;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class TrainingHistory {
 	
 	public enum PAYMENT_STATUS_TYPE {
-		PAYED("Pagado"), PENDING("Pendiente"), CANCELED("Cancelado");
+		PAYED(AppTrainerMessages.getString("TrainingHistory.payed")), PENDING(AppTrainerMessages.getString("TrainingHistory.pending")), CANCELED(AppTrainerMessages.getString("TrainingHistory.canceled")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String value;
 

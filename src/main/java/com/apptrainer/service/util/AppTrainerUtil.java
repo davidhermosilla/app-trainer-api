@@ -2,17 +2,16 @@ package com.apptrainer.service.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.apptrainer.AppTrainerMessages;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Group;
-import com.apptrainer.model.PadelTraining;
 import com.apptrainer.model.Training;
 import com.apptrainer.repository.AthleteRepository;
 import com.apptrainer.repository.GroupRepository;
@@ -29,7 +28,7 @@ public class AppTrainerUtil {
 		
 		//If the athleta does not exists error because should be created previously
 		if (!athletedbexist.isPresent()) {
-			throw new AppTrainerException("Error: El atleta con id: "+ athlete_id+" no existe");
+			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.athlete")+ athlete_id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return athletedbexist.get();
@@ -39,8 +38,8 @@ public class AppTrainerUtil {
 	 * @param athletes
 	 * @param padelTraining
 	 */
-	public static void removeAthletes(List<Athlete> athletes, PadelTraining padelTraining) {
-		List<Athlete> athletesdb = new ArrayList<Athlete>(padelTraining.getAthletes());
+	public static void removeAthletes(List<Athlete> athletes, Training training) {
+		List<Athlete> athletesdb = new ArrayList<Athlete>(training.getAthletes());
 		for (Athlete athlete: athletesdb) {
     		
     		boolean encontrado = false;
@@ -52,7 +51,7 @@ public class AppTrainerUtil {
     		}
     		
     		if (!encontrado) {
-    			padelTraining.getAthletes().remove(athlete);
+    			training.getAthletes().remove(athlete);
     		}
     		
     	}
@@ -63,12 +62,12 @@ public class AppTrainerUtil {
 	 * @param padelTraining
 	 * @throws AppTrainerException
 	 */
-	public static void addAthletes(AthleteRepository athleteRepository,List<Athlete> athletes, PadelTraining padelTraining) throws AppTrainerException {
+	public static void addAthletes(AthleteRepository athleteRepository,List<Athlete> athletes, Training training) throws AppTrainerException {
 		for (Athlete athlete: athletes) {
 			AppTrainerUtil.checkAthlete(athleteRepository,athlete.getId());
     		
     		boolean encontrado = false;
-    		for (Athlete athletedb: padelTraining.getAthletes()) {
+    		for (Athlete athletedb: training.getAthletes()) {
     			if (athletedb.equals(athlete)) {
     				encontrado=true;
     				break;
@@ -76,7 +75,7 @@ public class AppTrainerUtil {
     		}
     		
     		if (!encontrado) {
-    			padelTraining.getAthletes().add(athlete);
+    			training.getAthletes().add(athlete);
     		}
     		
     	}
@@ -93,7 +92,7 @@ public class AppTrainerUtil {
 		try {
 			group = groupRepository.findById(id).get();
 		} catch(NoSuchElementException ex) {
-			throw new AppTrainerException("El grupo "+id+" no existe");
+			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.group")+id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return group;
 	}
@@ -109,7 +108,7 @@ public class AppTrainerUtil {
 		try {
 			training = trainingRepository.findById(id).get();
 		} catch(NoSuchElementException ex) {
-			throw new AppTrainerException("El entrenamiento "+id+" no existe");
+			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.training")+id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return training;
 	}

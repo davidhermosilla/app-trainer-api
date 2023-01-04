@@ -39,6 +39,10 @@ public class Exercise {
 	@Column(name = "rest_interval", unique = false, nullable = false)
 	@JsonView(View.Basic.class)
     private int resInterval=0;
+	
+	@Column(name = "video_url", unique = false, nullable = true)
+	@JsonView(View.Basic.class)
+    private String videoUrl;	
 
 	public int getId() {
 		return id;
@@ -78,6 +82,14 @@ public class Exercise {
 
 	public void setResInterval(int resInterval) {
 		this.resInterval = resInterval;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 	
 	

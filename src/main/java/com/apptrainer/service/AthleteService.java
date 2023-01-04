@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.apptrainer.AppTrainerMessages;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Training;
@@ -51,7 +52,7 @@ public class AthleteService {
 		checkAthleteAssigned(training_id, athlete_id, athlete);
 		
 		if (trainingHistory.getTrainingDate()==null) {
-			throw new AppTrainerException("Error no ha asignado la fecha del entrenamiento");
+			throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.error-date")); //$NON-NLS-1$
 		}
 		
 		checkTrainingMonthly(athlete_id, trainingHistory, training, athlete);
@@ -86,7 +87,7 @@ public class AthleteService {
 					int newyear = trainingHistory.getTrainingDate().getYear();
 					int newmont =  trainingHistory.getTrainingDate().getMonth();
 					if (thyear==newyear && thmonth==newmont) {
-						throw new AppTrainerException("El athleta con id "+athlete_id+" ya tiene asignado un entrenamiento mensual en esa fecha.("+training.getTraining_type()+") desasigne este si desea asignar uno diferente en dicha fecha.");
+						throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.athlete")+athlete_id+AppTrainerMessages.getString("AthleteService.assigned")+training.getTraining_type()+AppTrainerMessages.getString("AthleteService.solution")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 				}
 			}
@@ -111,7 +112,7 @@ public class AthleteService {
 		}
 		
 		if (!encontrado) {
-			throw new AppTrainerException("El athleta "+athlete_id+" no tiene asignado el entrenamiento "+training_id+" asignelo y intentelo de nuevo");
+			throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.athlete2")+athlete_id+AppTrainerMessages.getString("AthleteService.not-assigned")+training_id+AppTrainerMessages.getString("AthleteService.solution2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

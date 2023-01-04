@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.apptrainer.AppTrainerMessages;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -29,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class Training {
 	
 	public enum TRAINING_DURATION_TYPE {
-		DAILY("Dia"), MONTHLY("Mes"), YEARLY("Año");
+		DAILY(AppTrainerMessages.getString("Training.daily")), MONTHLY(AppTrainerMessages.getString("Training.monthly")), YEARLY(AppTrainerMessages.getString("Training.yearly")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String value;
 

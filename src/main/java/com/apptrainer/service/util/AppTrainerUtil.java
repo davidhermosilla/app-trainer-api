@@ -13,9 +13,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
+import com.apptrainer.model.Exercise;
 import com.apptrainer.model.Group;
 import com.apptrainer.model.Training;
 import com.apptrainer.repository.AthleteRepository;
+import com.apptrainer.repository.ExerciseRepository;
 import com.apptrainer.repository.GroupRepository;
 import com.apptrainer.repository.TrainingRepository;
 
@@ -36,6 +38,19 @@ public class AppTrainerUtil {
 		
 		return athletedbexist.get();
 	}
+	
+	public static Exercise checkExercise(ExerciseRepository exerciseRepository, Integer exercise_id,
+			MessageSource mensajes) throws AppTrainerException {
+		Optional<Exercise> exerciseDb = exerciseRepository.findById(exercise_id);
+		
+		//If the athleta does not exists error because should be created previously
+		if (!exerciseDb.isPresent()) {
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AppTrainerUtil.exercise")+ exercise_id+AppTrainerUtil.getString(mensajes,"AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		return exerciseDb.get();
+
+	}	
 	
 	/**
 	 * @param athletes
@@ -149,5 +164,5 @@ public class AppTrainerUtil {
 	public static String getString(MessageSource mensajes,String key) {
 		return mensajes.getMessage(key, null, LocaleContextHolder.getLocale());
 	}
-	
+
 }

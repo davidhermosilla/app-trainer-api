@@ -12,8 +12,10 @@ import org.springframework.util.StringUtils;
 
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
+import com.apptrainer.model.Exercise;
 import com.apptrainer.model.FitnessTraining;
 import com.apptrainer.repository.AthleteRepository;
+import com.apptrainer.repository.ExerciseRepository;
 import com.apptrainer.repository.FitnessTrainingRepository;
 import com.apptrainer.service.util.AppTrainerUtil;
 
@@ -25,6 +27,9 @@ public class FitnessTrainingService {
     
     @Autowired
     private AthleteRepository athleteRepository;
+
+    @Autowired
+    private ExerciseRepository exerciseRepository;
     
     @Autowired
 	private MessageSource mensajes;
@@ -73,6 +78,26 @@ public class FitnessTrainingService {
     	return fitnessTrainingRepository.saveAndFlush(fitnessTraining);
     }
     
+	public FitnessTraining addExercise(Integer fitnessTrainingId, Integer exercise_id) throws AppTrainerException {
+		FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
+    	
+		Exercise exercise = AppTrainerUtil.checkExercise(exerciseRepository,exercise_id,mensajes);
+    	
+    	fitnessTraining.getExercises().add(exercise);
+    	
+    	return fitnessTrainingRepository.saveAndFlush(fitnessTraining);
+	}
+	
+	public FitnessTraining deleteExercise(Integer fitnessTrainingId, Integer exercise_id) throws AppTrainerException {
+    	FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
+    	
+    	Exercise exercise = AppTrainerUtil.checkExercise(exerciseRepository,exercise_id,mensajes);
+    	
+    	fitnessTraining.getExercises().remove(exercise);
+    	
+    	return fitnessTrainingRepository.saveAndFlush(fitnessTraining);
+	} 	
+    
 	public FitnessTraining deleteAthlete(Integer fitnessTrainingId, Integer athlete_id) throws AppTrainerException {
     	FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
     	
@@ -113,6 +138,6 @@ public class FitnessTrainingService {
 
 	public void setMensajes(MessageSource mensajes) {
 		this.mensajes = mensajes;
-	}	
+	}
 
 }

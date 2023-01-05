@@ -36,7 +36,7 @@ public class Exercise {
 	@JsonView(View.Basic.class)
     private int reps;
 	
-	@Column(name = "rest_interval", unique = false, nullable = false)
+	@Column(name = "rest_interval", unique = false, nullable = true)
 	@JsonView(View.Basic.class)
     private int resInterval=0;
 	

@@ -37,6 +37,14 @@ public class FitnessTraining extends Training {
 	public void setDuration_session(String duration_session) {
 		this.duration_session = duration_session;
 	}
+
+	public List<Exercise> getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(List<Exercise> exercises) {
+		this.exercises = exercises;
+	}
     
 
 }

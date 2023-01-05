@@ -115,4 +115,30 @@ public class FitnessTrainingController {
 
     	fitnesstrainingService.deleteFitnessTraining(id);
     }
+    
+    @PostMapping("/{id}/exercises/{exercise_id}")
+    @JsonView(View.Extended.class)
+    public ResponseEntity<?> addExercise(@PathVariable Integer id, @PathVariable Integer exercise_id) {
+        try {
+        	FitnessTraining fitnessTrainingReturned = fitnesstrainingService.addExercise(id, exercise_id);
+            return new ResponseEntity<FitnessTraining>(fitnessTrainingReturned,HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (AppTrainerException e) {
+        	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+    
+    @DeleteMapping("/{id}/athletes/{athlete_id}")
+    @JsonView(View.Extended.class)
+    public ResponseEntity<?> deleteExercise(@PathVariable Integer id, @PathVariable Integer exercise_id) {
+        try {
+        	FitnessTraining fitnessTrainingReturned = fitnesstrainingService.deleteExercise(id, exercise_id);
+            return new ResponseEntity<FitnessTraining>(fitnessTrainingReturned,HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (AppTrainerException e) {
+        	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }   
 }

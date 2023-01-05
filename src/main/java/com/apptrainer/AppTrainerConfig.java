@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,7 +27,8 @@ public class AppTrainerConfig implements WebMvcConfigurer{
 
 	@Bean
 	  public LocaleResolver localeResolver() {
-		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+//		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
 	    localeResolver.setDefaultLocale(new Locale("es"));
 	    return localeResolver;
 	  }

@@ -129,7 +129,7 @@ public class FitnessTrainingController {
 		}
     }
     
-    @DeleteMapping("/{id}/athletes/{athlete_id}")
+    @DeleteMapping("/{id}/exercises/{exercise_id}")
     @JsonView(View.Extended.class)
     public ResponseEntity<?> deleteExercise(@PathVariable Integer id, @PathVariable Integer exercise_id) {
         try {

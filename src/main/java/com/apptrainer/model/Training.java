@@ -16,9 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
+import com.apptrainer.service.ApplicationContextProvider;
 import com.apptrainer.service.util.AppTrainerUtil;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Training {
-	@Autowired
+	
 	private static MessageSource mensajes;
 	
 	public enum TRAINING_DURATION_TYPE {
@@ -82,6 +82,7 @@ public class Training {
     private List<Athlete> athletes;	
 	
     public Training() {
+    	mensajes=ApplicationContextProvider.bean(MessageSource.class);
     }
 
     public int getId() {

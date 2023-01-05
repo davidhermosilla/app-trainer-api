@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
+import com.apptrainer.service.ApplicationContextProvider;
 import com.apptrainer.service.util.AppTrainerUtil;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -69,6 +70,10 @@ public class TrainingHistory {
     @JsonView(View.None.class)
     private int repeat_training = 0;
 	
+    public TrainingHistory() {
+    	mensajes=ApplicationContextProvider.bean(MessageSource.class);
+    }
+    
 	public int getId() {
 		return id;
 	}

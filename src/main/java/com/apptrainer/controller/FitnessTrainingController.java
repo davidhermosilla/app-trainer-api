@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/fitnesstrainings")
 public class FitnessTrainingController {
-	
+	//TODO: Añadir control de excepciones
 	static final Logger log = LoggerFactory.getLogger(FitnessTrainingController.class);
 	
     @Autowired

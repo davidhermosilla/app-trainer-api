@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.apptrainer.exception.AppTrainerException;
@@ -21,6 +22,9 @@ public class GroupService {
 
     @Autowired
     private AthleteRepository athleteRepository;
+    
+    @Autowired
+	private MessageSource mensajes;
 
     public List<Group> listAll() {
         return groupRepository.findAll();
@@ -40,9 +44,9 @@ public class GroupService {
 
 	public Group addAthlete(Integer id, Integer athlete_id) throws AppTrainerException {
 		
-		Group group = AppTrainerUtil.checkGroup(groupRepository, id);
+		Group group = AppTrainerUtil.checkGroup(groupRepository, id,mensajes);
 		
-		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id);
+		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id,mensajes);
 		
 		if(!group.getAthletes().contains(athlete)) {
 			group.getAthletes().add(athlete);
@@ -56,9 +60,9 @@ public class GroupService {
 
 	public Group deleteAthlete(Integer id, Integer athlete_id) throws AppTrainerException {
 
-		Group group = AppTrainerUtil.checkGroup(groupRepository,id);
+		Group group = AppTrainerUtil.checkGroup(groupRepository,id,mensajes);
 		
-		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id);
+		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id,mensajes);
 		
 		if(group.getAthletes().contains(athlete)) {
 			group.getAthletes().remove(athlete);
@@ -67,5 +71,13 @@ public class GroupService {
 		groupRepository.save(group);
 		
 		return group;
+	}
+
+	public MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(MessageSource mensajes) {
+		this.mensajes = mensajes;
 	}
 }

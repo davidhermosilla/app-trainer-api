@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/groups")
 public class GroupController {
-	
+	//TODO: Añadir control de excepciones
 	static final Logger log = LoggerFactory.getLogger(GroupController.class);
 	
     @Autowired

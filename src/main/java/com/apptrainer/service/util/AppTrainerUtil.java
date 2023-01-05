@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.apptrainer.AppTrainerMessages;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Group;
@@ -18,17 +20,18 @@ import com.apptrainer.repository.GroupRepository;
 import com.apptrainer.repository.TrainingRepository;
 
 public class AppTrainerUtil {
+	
 	/**
 	 * @param athlete
 	 * @return 
 	 * @throws AppTrainerException
 	 */
-	public static Athlete checkAthlete(AthleteRepository athleteRepository, int athlete_id) throws AppTrainerException {
+	public static Athlete checkAthlete(AthleteRepository athleteRepository, int athlete_id,MessageSource mensajes) throws AppTrainerException {
 		Optional<Athlete> athletedbexist = athleteRepository.findById(athlete_id);
 		
 		//If the athleta does not exists error because should be created previously
 		if (!athletedbexist.isPresent()) {
-			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.athlete")+ athlete_id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AppTrainerUtil.athlete")+ athlete_id+AppTrainerUtil.getString(mensajes,"AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		return athletedbexist.get();
@@ -62,9 +65,9 @@ public class AppTrainerUtil {
 	 * @param padelTraining
 	 * @throws AppTrainerException
 	 */
-	public static void addAthletes(AthleteRepository athleteRepository,List<Athlete> athletes, Training training) throws AppTrainerException {
+	public static void addAthletes(AthleteRepository athleteRepository,List<Athlete> athletes, Training training,MessageSource mensajes) throws AppTrainerException {
 		for (Athlete athlete: athletes) {
-			AppTrainerUtil.checkAthlete(athleteRepository,athlete.getId());
+			AppTrainerUtil.checkAthlete(athleteRepository,athlete.getId(),mensajes);
     		
     		boolean encontrado = false;
     		for (Athlete athletedb: training.getAthletes()) {
@@ -87,12 +90,12 @@ public class AppTrainerUtil {
 	 * @return
 	 * @throws AppTrainerException
 	 */
-	public static Group checkGroup(GroupRepository groupRepository,Integer id) throws AppTrainerException {
+	public static Group checkGroup(GroupRepository groupRepository,Integer id,MessageSource mensajes) throws AppTrainerException {
 		Group group=null;
 		try {
 			group = groupRepository.findById(id).get();
 		} catch(NoSuchElementException ex) {
-			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.group")+id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AppTrainerUtil.group")+id+AppTrainerUtil.getString(mensajes,"AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return group;
 	}
@@ -103,12 +106,12 @@ public class AppTrainerUtil {
 	 * @return
 	 * @throws AppTrainerException
 	 */
-	public static Training checkTraining(TrainingRepository trainingRepository,Integer id) throws AppTrainerException {
+	public static Training checkTraining(TrainingRepository trainingRepository,Integer id,MessageSource mensajes) throws AppTrainerException {
 		Training training=null;
 		try {
 			training = trainingRepository.findById(id).get();
 		} catch(NoSuchElementException ex) {
-			throw new AppTrainerException(AppTrainerMessages.getString("AppTrainerUtil.training")+id+AppTrainerMessages.getString("AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AppTrainerUtil.training")+id+AppTrainerUtil.getString(mensajes,"AppTrainerUtil.notexists")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return training;
 	}
@@ -141,6 +144,10 @@ public class AppTrainerUtil {
 	    
 //	    Date newdate = java.util.Date.from(calendar.toZonedDateTime().toInstant());
 		return newdate;
+	}
+
+	public static String getString(MessageSource mensajes,String key) {
+		return mensajes.getMessage(key, null, LocaleContextHolder.getLocale());
 	}
 	
 }

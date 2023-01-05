@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/padeltrainings")
 public class PadelTrainingController {
-	
+	//TODO: Añadir control de excepciones
 	static final Logger log = LoggerFactory.getLogger(PadelTrainingController.class);
 	
     @Autowired

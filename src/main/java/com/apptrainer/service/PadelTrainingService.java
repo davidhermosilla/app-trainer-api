@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +24,9 @@ public class PadelTrainingService {
     
     @Autowired
     private AthleteRepository athleteRepository;
+    
+    @Autowired
+	private MessageSource mensajes;
     
     public List<PadelTraining> listAllPadelTrainings() {
         return padelTrainingRepository.findAll();
@@ -51,7 +55,7 @@ public class PadelTrainingService {
     public PadelTraining updatePadelTrainingAthletes(int padelTrainingId, List<Athlete> athletes) throws AppTrainerException {
     	PadelTraining padelTraining = padelTrainingRepository.findById(padelTrainingId).get();
     	
-    	AppTrainerUtil.addAthletes(athleteRepository,athletes, padelTraining);
+    	AppTrainerUtil.addAthletes(athleteRepository,athletes, padelTraining,mensajes);
     	
 		AppTrainerUtil.removeAthletes(athletes, padelTraining);
     	
@@ -61,7 +65,7 @@ public class PadelTrainingService {
     public PadelTraining addAthlete(int padelTrainingId, int athlete_id) throws AppTrainerException {
     	PadelTraining padelTraining = padelTrainingRepository.findById(padelTrainingId).get();
     	
-    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id);
+    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id,mensajes);
     	
     	padelTraining.getAthletes().add(athlete);
     	
@@ -71,7 +75,7 @@ public class PadelTrainingService {
 	public PadelTraining deleteAthlete(Integer padelTrainingId, Integer athlete_id) throws AppTrainerException {
     	PadelTraining padelTraining = padelTrainingRepository.findById(padelTrainingId).get();
     	
-    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id);
+    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id,mensajes);
     	
     	padelTraining.getAthletes().remove(athlete);
     	
@@ -100,6 +104,14 @@ public class PadelTrainingService {
 
     public void deletePadelTraining(Integer id) {
         padelTrainingRepository.deleteById(id);
-    }	
+    }
+
+	public MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(MessageSource mensajes) {
+		this.mensajes = mensajes;
+	}	
 
 }

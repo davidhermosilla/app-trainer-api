@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,14 +25,18 @@ import com.apptrainer.model.TrainingHistory;
 import com.apptrainer.response.PaysResponse;
 import com.apptrainer.service.AthleteService;
 import com.apptrainer.service.TrainingHistoryService;
+import com.apptrainer.service.util.AppTrainerUtil;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(AppTrainerConstant.APP_PREFIX+"/athletes")
 public class AthleteController {
-	
+	// TODO: Añadir control de excepciones
 	static final Logger log = LoggerFactory.getLogger(AthleteController.class);
+	
+	@Autowired
+	private MessageSource mensajes;
 	
     @Autowired
     AthleteService athleteService;
@@ -41,7 +46,7 @@ public class AthleteController {
 
     @GetMapping("/test")
     public  ResponseEntity<String> test() {
-    	return new ResponseEntity<String>("Esto es un test", HttpStatus.OK);
+    	return new ResponseEntity<String>(AppTrainerUtil.getString(mensajes,"language.test"), HttpStatus.OK);
     }    
     
     @GetMapping("")
@@ -132,7 +137,13 @@ public class AthleteController {
     public void delete(@PathVariable Integer id) {
         athleteService.deleteAthlete(id);
     }
-    
-    
+
+	public MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(MessageSource mensajes) {
+		this.mensajes = mensajes;
+	}
     
 }

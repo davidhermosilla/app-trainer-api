@@ -16,7 +16,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.apptrainer.AppTrainerMessages;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+
+import com.apptrainer.service.util.AppTrainerUtil;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -28,9 +31,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Training {
+	@Autowired
+	private static MessageSource mensajes;
 	
 	public enum TRAINING_DURATION_TYPE {
-		DAILY(AppTrainerMessages.getString("Training.daily")), MONTHLY(AppTrainerMessages.getString("Training.monthly")), YEARLY(AppTrainerMessages.getString("Training.yearly")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		DAILY(AppTrainerUtil.getString(mensajes,"Training.daily")), MONTHLY(AppTrainerUtil.getString(mensajes,"Training.monthly")), YEARLY(AppTrainerUtil.getString(mensajes,"Training.yearly")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String value;
 
@@ -122,6 +127,14 @@ public class Training {
 
 	public void setDurationType(String durationType) {
 		this.durationType = durationType;
+	}
+
+	public static MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public static void setMensajes(MessageSource mensajes) {
+		Training.mensajes = mensajes;
 	}
 
 }

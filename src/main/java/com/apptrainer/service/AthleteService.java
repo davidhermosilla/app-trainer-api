@@ -7,9 +7,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.apptrainer.AppTrainerMessages;
 import com.apptrainer.exception.AppTrainerException;
 import com.apptrainer.model.Athlete;
 import com.apptrainer.model.Training;
@@ -26,6 +26,9 @@ public class AthleteService {
     
     @Autowired
     private TrainingRepository trainingRepository;
+    
+    @Autowired
+	private MessageSource mensajes;
     
     public List<Athlete> listAll() {
         return athleteRepository.findAll();
@@ -45,14 +48,14 @@ public class AthleteService {
     
 	public Athlete addTrainingHistory(Integer training_id, Integer athlete_id,TrainingHistory trainingHistory) throws AppTrainerException {
 		
-		Training training = AppTrainerUtil.checkTraining(trainingRepository, training_id);
+		Training training = AppTrainerUtil.checkTraining(trainingRepository, training_id,mensajes);
 		
-		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id);
+		Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository, athlete_id,mensajes);
 		
 		checkAthleteAssigned(training_id, athlete_id, athlete);
 		
 		if (trainingHistory.getTrainingDate()==null) {
-			throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.error-date")); //$NON-NLS-1$
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AthleteService.error-date")); //$NON-NLS-1$
 		}
 		
 		checkTrainingMonthly(athlete_id, trainingHistory, training, athlete);
@@ -87,7 +90,7 @@ public class AthleteService {
 					int newyear = trainingHistory.getTrainingDate().getYear();
 					int newmont =  trainingHistory.getTrainingDate().getMonth();
 					if (thyear==newyear && thmonth==newmont) {
-						throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.athlete")+athlete_id+AppTrainerMessages.getString("AthleteService.assigned")+training.getTraining_type()+AppTrainerMessages.getString("AthleteService.solution")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AthleteService.athlete")+athlete_id+AppTrainerUtil.getString(mensajes,"AthleteService.assigned")+training.getTraining_type()+AppTrainerUtil.getString(mensajes,"AthleteService.solution")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 				}
 			}
@@ -112,7 +115,7 @@ public class AthleteService {
 		}
 		
 		if (!encontrado) {
-			throw new AppTrainerException(AppTrainerMessages.getString("AthleteService.athlete2")+athlete_id+AppTrainerMessages.getString("AthleteService.not-assigned")+training_id+AppTrainerMessages.getString("AthleteService.solution2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new AppTrainerException(AppTrainerUtil.getString(mensajes,"AthleteService.athlete2")+athlete_id+AppTrainerUtil.getString(mensajes,"AthleteService.not-assigned")+training_id+AppTrainerUtil.getString(mensajes,"AthleteService.solution2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -137,13 +140,24 @@ public class AthleteService {
 		float total=0;
 		PaysResponse pr = new PaysResponse();
 		for (TrainingHistory th:listTrainings) {
-			pending.add(th);
-			total+=th.getTraining().getPryce();
+			if (TrainingHistory.PAYMENT_STATUS_TYPE.PENDING.getValue().equals(th.getPayStatus())) {
+				pending.add(th);
+				total+=th.getTraining().getPryce();
+			}
 		}
 
 		pr.setPendingTrainingHistory(pending);
 		pr.setTotal_pending(total);
 		return pr;
 	}
+
+	public MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(MessageSource mensajes) {
+		this.mensajes = mensajes;
+	}
+
 
 }

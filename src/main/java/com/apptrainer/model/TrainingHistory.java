@@ -14,7 +14,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.apptrainer.AppTrainerMessages;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+
+import com.apptrainer.service.util.AppTrainerUtil;
 import com.apptrainer.view.View;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,9 +26,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Entity
 @Table(name = "training_history")
 public class TrainingHistory {
+	@Autowired
+	private static MessageSource mensajes;
 	
 	public enum PAYMENT_STATUS_TYPE {
-		PAYED(AppTrainerMessages.getString("TrainingHistory.payed")), PENDING(AppTrainerMessages.getString("TrainingHistory.pending")), CANCELED(AppTrainerMessages.getString("TrainingHistory.canceled")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		PAYED(AppTrainerUtil.getString(mensajes,"TrainingHistory.payed")), PENDING(AppTrainerUtil.getString(mensajes,"TrainingHistory.pending")), CANCELED(AppTrainerUtil.getString(mensajes,"TrainingHistory.canceled")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private String value;
 
@@ -103,5 +108,14 @@ public class TrainingHistory {
 	public void setRepeat_training(int repeat_training) {
 		this.repeat_training = repeat_training;
 	}
+
+	public static MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public static void setMensajes(MessageSource mensajes) {
+		TrainingHistory.mensajes = mensajes;
+	}
+
 
 }

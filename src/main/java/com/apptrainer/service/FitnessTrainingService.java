@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +25,9 @@ public class FitnessTrainingService {
     
     @Autowired
     private AthleteRepository athleteRepository;
+    
+    @Autowired
+	private MessageSource mensajes;
     
     public List<FitnessTraining> listAllFitnessTrainings() {
         return fitnessTrainingRepository.findAll();
@@ -52,7 +56,7 @@ public class FitnessTrainingService {
     public FitnessTraining updateFitnessTrainingAthletes(int fitnessTrainingId, List<Athlete> athletes) throws AppTrainerException {
     	FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
     	
-    	AppTrainerUtil.addAthletes(athleteRepository,athletes, fitnessTraining);
+    	AppTrainerUtil.addAthletes(athleteRepository,athletes, fitnessTraining,mensajes);
     	
 		AppTrainerUtil.removeAthletes(athletes, fitnessTraining);
     	
@@ -62,7 +66,7 @@ public class FitnessTrainingService {
     public FitnessTraining addAthlete(int fitnessTrainingId, int athlete_id) throws AppTrainerException {
     	FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
     	
-    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id);
+    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id,mensajes);
     	
     	fitnessTraining.getAthletes().add(athlete);
     	
@@ -72,7 +76,7 @@ public class FitnessTrainingService {
 	public FitnessTraining deleteAthlete(Integer fitnessTrainingId, Integer athlete_id) throws AppTrainerException {
     	FitnessTraining fitnessTraining = fitnessTrainingRepository.findById(fitnessTrainingId).get();
     	
-    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id);
+    	Athlete athlete = AppTrainerUtil.checkAthlete(athleteRepository,athlete_id,mensajes);
     	
     	fitnessTraining.getAthletes().remove(athlete);
     	
@@ -101,6 +105,14 @@ public class FitnessTrainingService {
 
     public void deleteFitnessTraining(Integer id) {
         fitnessTrainingRepository.deleteById(id);
-    }	
+    }
+
+	public MessageSource getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(MessageSource mensajes) {
+		this.mensajes = mensajes;
+	}	
 
 }
